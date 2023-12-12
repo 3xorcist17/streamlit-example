@@ -3,7 +3,7 @@ import json
 
 st.title('Capture IG Unfollowers')
 
-st.warning("Upload Followers and Folloing '.json' Files Accordingly")
+st.warning("Upload Followers and Folloing .JSON Files Accordingly")
 followers = st.file_uploader("Upload Followers File", type=["json"])
 following = st.file_uploader("Upload Following File", type=["json"])
 
