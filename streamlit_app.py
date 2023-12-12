@@ -33,3 +33,5 @@ if st.button('Capture'):
   st.error("\nNo of Unfollowers: " + str(len(unfollowers)) + "\n")
   st.write('\n')
   st.write(sorted_ls)
+
+st.text('Created by SD')
