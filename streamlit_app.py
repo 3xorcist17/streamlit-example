@@ -1,40 +1,37 @@
-import altair as alt
-import numpy as np
-import pandas as pd
 import streamlit as st
+import json
 
-"""
-# Welcome to Streamlit!
+st.title('Capture IG Unfollowers')
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+st.warning("Followers")
+followers = st.file_uploader("Upload Followers File", type=["json"])
+st.write("\n")
+st.warning("Following")
+following = st.file_uploader("Upload Following File", type=["json"])
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
 
-# num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-# num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+# getting followers
+if followers is not None:
+  followers1 = followers.read().decode('utf-8')
+  json_data1 = json.loads(followers1)
 
-# indices = np.linspace(0, 1, num_points)
-# theta = 2 * np.pi * num_turns * indices
-# radius = indices
 
-# x = radius * np.cos(theta)
-# y = radius * np.sin(theta)
+# getting following
+if following is not None:
+  following1 = following.read().decode('utf-8')
+  json_data2 = json.loads(following1)
 
-# df = pd.DataFrame({
-#     "x": x,
-#     "y": y,
-#     "idx": indices,
-#     "rand": np.random.randn(num_points),
-# })
 
-# st.altair_chart(alt.Chart(df, height=700, width=700)
-#     .mark_point(filled=True)
-#     .encode(
-#         x=alt.X("x", axis=None),
-#         y=alt.Y("y", axis=None),
-#         color=alt.Color("idx", legend=None, scale=alt.Scale()),
-#         size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-#     ))
+
+if st.button('Capture'):
+
+  followers2 = [item['string_list_data'][0]['value'] for item in json_data1]
+  following2 = [item1['string_list_data'][0]['value'] for item1 in json_data2['relationships_following']]
+  
+  unfollowers = list(set(following2) - set(followers2))
+  sorted_ls = sorted(unfollowers)
+  
+  
+  st.error("\nNo of Unfollowers: " + str(len(unfollowers)) + "\n")
+  st.write('\n')
+  st.write(sorted_ls)
